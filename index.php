@@ -12,6 +12,8 @@
 $default_filename = "data.json";
 
 $result_array = array(); //clear results holder
+$proxy_url = "";
+$url_list_content = "";
 
 //simple stat processing
 if (isset($_POST["action"]) && $_POST["action"] == "yes") {
@@ -64,12 +66,12 @@ if (isset($_POST["action"]) && $_POST["action"] == "yes") {
     }
 
 } else {
-    //load the file and data
-    $data = load_file($default_filename);
-    if ($data) {
-	$proxy_url = $data["proxy_url"];
-	$url_list_content = $data["url_list_content"];
-    }
+	//load the file and data
+	$data = load_file($default_filename);
+	if ($data) {
+		$proxy_url = $data["proxy_url"];
+		$url_list_content = $data["url_list_content"];
+	}
 }
 
 
@@ -79,15 +81,18 @@ if (isset($_POST["action"]) && $_POST["action"] == "yes") {
  * Loads config file into memory
  */
 function load_file($default_filename) {
-    $fp = fopen($default_filename, "r");
-    $contents = fread($fp, filesize($default_filename));
-    fclose($fp);
+	if (!file_exists($default_filename)) {
+		return false;
+	}
+	$fp = fopen($default_filename, "r");
+	$contents = fread($fp, filesize($default_filename));
+	fclose($fp);
 
-    if (!$contents) {
-	return false;
-    }
+	if (!$contents) {
+		return false;
+	}
 
-    return json_decode($contents, true);
+	return json_decode($contents, true);
 }
 
 /**

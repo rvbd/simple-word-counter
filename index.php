@@ -177,6 +177,9 @@ function save_file($data_array, $default_filename) {
 </head>
 <body>
 	<h2>Simple word counter</h2>
+	<div class="alert alert-info" id="please-wait">
+		<p>Please wait while I fetch the contents...</p>
+	</div>
 	<div class="container-fluid">
 
 	<div class="row-fluid">
@@ -249,17 +252,21 @@ function save_file($data_array, $default_filename) {
 		    }
 		    ?>
 		</div>
-	    </div>
 	</div>
+
 	<script src="js/jquery-latest.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 	    $(function(){
+			$('#please-wait').hide();
+
 			$('#count_button').click(function() {
+				$('#please-wait').show();
 				$('#counter_data').submit();
 			});
 
 			$('#populate_button').click(function() {
+				$('#please-wait').show();
 				$('#action_value').val("populate");
 				$('#counter_data').submit();
 			});

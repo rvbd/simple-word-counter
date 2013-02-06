@@ -13,6 +13,8 @@ $default_filename = "data.json";
 
 $result_array = array(); //clear results holder
 
+$global_unique_words_array = array();
+
 //simple stat processing
 if (isset($_POST["action"]) && $_POST["action"] == "yes") {
 
@@ -58,7 +60,11 @@ if (isset($_POST["action"]) && $_POST["action"] == "yes") {
 
 	//now get the unique stuff
 	$page_content_clean = strtolower($page_content);
-	$page_word_unique_count = count(array_unique(str_word_count($page_content_clean, 1)));
+	$page_unique_words_array = array_unique(str_word_count($page_content_clean, 1));
+	$page_word_unique_count = count($page_unique_words_array);
+
+	//save the global unique words
+	$global_unique_words_array = array_unique(array_merge($global_unique_words_array, $page_unique_words_array));
 
 	$result_array[$url_target] = $page_word_unique_count;
     }
@@ -104,7 +110,7 @@ function save_file($data_array, $default_filename) {
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Bootstrap 101 Template</title>
+	<title>Simple web page word counter</title>
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 	<link href="css/style.css" rel="stylesheet" media="screen">
@@ -112,7 +118,7 @@ function save_file($data_array, $default_filename) {
 
 </head>
 <body>
-	<h2>Simple word counter</h2>
+	<h2>Simple web page word counter</h2>
 	<div class="container-fluid">
 
 	    <div class="row-fluid">
@@ -168,6 +174,10 @@ function save_file($data_array, $default_filename) {
 			<tr>
 			    <td><strong>Average per page</strong></td>
 			    <td><strong><em><?=round($total_count / count($result_array));?></em></strong></td>
+			</tr>
+			<tr>
+			    <td><strong>Global Unique Words</strong></td>
+			    <td><p class="text-info"><?=count($global_unique_words_array);?></p></td>
 			</tr>
 		    </table>
 		    <?php

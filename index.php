@@ -109,6 +109,9 @@ if (isset($_POST["action"])) {
 					continue; //ignore characters in the ignore list
 				}
 
+				$source_base_url = parse_url($source_url);
+				$source_base_url_string = $source_base_url["scheme"] . "://" . $source_base_url["host"];
+
 				if (!substr_count($href, $source_url)) {
 
 					//simple check to skip outside address
@@ -117,7 +120,7 @@ if (isset($_POST["action"])) {
 					}
 
 					//prefix the address in the url if it doesn't exist
-					$href = $source_url . "/" . $href;
+					$href = $source_base_url_string . "/" . $href;
 				}
 				$url_list_content .= $href . "\n";
 			}
@@ -168,7 +171,7 @@ function save_file($data_array, $default_filename) {
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Bootstrap 101 Template</title>
+	<title>Simple word counter</title>
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
 	<link href="css/style.css" rel="stylesheet" media="screen">
